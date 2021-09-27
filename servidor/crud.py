@@ -3,7 +3,7 @@ import sqlite3
 #criando controladores para o bd
 con = sqlite3.connect('banco.db')
 cur = con.cursor()
-debug = True
+debug = False
 
 def start_bd():
     #criar tabelas
