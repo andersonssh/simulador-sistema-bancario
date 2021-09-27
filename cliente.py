@@ -2,7 +2,7 @@ import interfaceConsole
 import socket
 import ipaddress
 from time import sleep
-debug = True
+debug = False
 soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 t_con = 5 #segundos para aguardar a conexao
 soc.settimeout(t_con)
@@ -92,15 +92,33 @@ def painel():
                     print('Cadastro Fracasso')
                 return 'cadastro_fail'
     def depositar(valor):
-        pass
+        req = '1|' + str(valor)
+        soc.send(req.encode())
+        return aguardar_resposta()
+
+
     def sacar(valor):
-        pass
+        req = '2|' + str(valor)
+        soc.send(req.encode())
+        return aguardar_resposta()
+
+
     def transferir(valor, email_destino):
-        pass
+        req = '3|' + str(valor) + '|' + email_destino
+        print(req)
+        soc.send(req.encode())
+        return aguardar_resposta()
+
+
     def alterar_senha(senha_antiga, senha_nova):
-        pass
-    def verificar_transacoes():
-        pass
+        req = '6|' + senha_antiga + '|' + senha_nova
+        soc.send(req.encode())
+        return aguardar_resposta()
+
+
+    def mostrar_transacoes():
+        for i in acc['transacoes']:
+            print(i)
 
     while True:
         resultado = logar()
@@ -119,11 +137,8 @@ def painel():
             input('')
 
 
-
-
     ########################################################################################
     #############################      sessao pós login       ##############################
-
 
 
     while True:
@@ -139,7 +154,7 @@ def painel():
                     print(dados)
                 dados = dados.split('|')
                 acc['email'] = dados[0]
-                acc['usuario'] = dados[1]
+                acc['nome'] = dados[1]
                 acc['saldo'] = float(dados[2])
                 # _ é o separador usado para distinguir transacoes diferentes
                 acc['transacoes'] = [i for i in dados[3].split('_')]
@@ -153,30 +168,91 @@ def painel():
                 exit()
 
             ############### FIM LOOP DE ATUALIZACAO DOS DADOS ##############
-        op = interfaceConsole.mostrar_menu(f'Logado como {acc["nome"]} SALDO: R$ {acc["saldo"]}',
-                                      f'{acc["email"]}\n[ 1 ] DEPOSITAR\n[ 2 ] SACAR\n [ 3 ] TRANSFERIR\n[ 4 ] ALTERAR SENHA\n[ 0 ] SAIR', 0, 4)
+        op = interfaceConsole.mostrar_menu(f'Logado como {acc["nome"].split(" ")[0]} SALDO: R$ {acc["saldo"]}',
+                                      f'email:{acc["email"]}\n\n[ 1 ] DEPOSITAR\n[ 2 ] SACAR\n[ 3 ] TRANSFERIR\n[ 4 ] ALTERAR SENHA\n[ 5 ] VER HISTÓRICO DE TRANSAÇÕES\n[ 0 ] SAIR', 0, 5)
         interfaceConsole.limpar_console()
         if op == 1:
             print('\t\tDEPOSITAR')
+            try:
+                valor = float(input('\n\nDigite o valor (ex: 120.50): '))
+            except ValueError:
+                print('Valor Inválido! (pressione ENTER)')
+                input('')
+            else:
+                if valor <= 0:
+                    print('Você não pode depositar este valor! (pressione ENTER)')
+                    input('')
+                else:
+                    if depositar(valor):
+                        print('DEPOSITO REALIZADO! (pressione ENTER)')
+                        input('')
+                    else:
+                        print('FALHA NO DEPOSITO! (pressione ENTER)')
+                        input('')
+
         elif op == 2:
-            print('\t\tSACAR')
-            pass
+            try:
+                valor = float(input('\n\nDigite o valor (ex: 120.50): '))
+            except ValueError:
+                print('Valor Inválido! (pressione ENTER)')
+                input('')
+            else:
+                if valor > acc['saldo']:
+                    print('Você não tem saldo suficiente para sacar essa quantia (pressione ENTER)')
+                    input('')
+                elif valor <= 0:
+                    print('Você não pode sacar este valor! (pressione ENTER)')
+                    print(input(''))
+                else:
+                    if sacar(valor):
+                        print('SAQUE REALIZADO! (pressione ENTER)')
+                        input('')
+                    else:
+                        print('FALHA NO SAQUE! (pressione ENTER)')
+                        input('')
         elif op == 3:
             print('\t\tTRANSFERIR')
-            pass
+            try:
+                valor = float(input('\n\nDigite o valor (ex: 120.50): '))
+            except ValueError:
+                print('Valor Inválido! (pressione ENTER)')
+                input('')
+            else:
+                if valor > acc['saldo']:
+                    print('Você não tem saldo suficiente para transferir essa quantia (pressione ENTER)')
+                    input('')
+                elif valor <= 0:
+                    print('Você não pode transferir este valor! (pressione ENTER)')
+                    print(input(''))
+                else:
+                    email_destinatario = input('Digite o email do destinatário: ')
+                    if transferir(valor, email_destinatario):
+                        print('TRANSFERENCIA REALIZADA! (pressione ENTER)')
+                        input('')
+                    else:
+                        print('FALHA NA TRANSFERENCIA! O VERIFIQUE O EMAIL INFORMADO! (pressione ENTER)')
+                        input('')
         elif op == 4:
             print('\t\tALTERAR SENHA')
-            pass
+            senha_antiga = input('\n\nDigite a senha atual: ')
+            senha_nova = input('Digite a nova senha: ')
+            if alterar_senha(senha_antiga, senha_nova):
+                print('Senha alterada com sucesso! (pressione ENTER)')
+                input('')
+                painel()
+                exit()
+            else:
+                print('A senha não foi alterada! (pressione ENTER)')
+                input('')
+        elif op == 5:
+            print('\t\tTRANSAÇÕES')
+            print('\n')
+            mostrar_transacoes()
+            print('')
+            input('pressione ENTER')
         elif op == 0:
             soc.close()
             exit()
-
-
-
-
-
-
-
 
 
 

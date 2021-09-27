@@ -1,6 +1,5 @@
 from platform import system
 from os import system as command
-from time import sleep
 
 so = system()
 tempo_espera = 2 #em segundos
@@ -26,13 +25,13 @@ def mostrar_menu(titulo:str, opcoes:str, min_:int, max_:int):
         try:
             escolha = int(escolha)
         except:
-            print('Dado inválido')
-            sleep(tempo_espera)
+            print('Dado inválido (pressione ENTER)')
+            input('')
             continue
 
         if escolha < min_ or escolha > max_:
-            print('O valor selecionado não existe')
-            sleep(tempo_espera)
+            print('O valor selecionado não existe (pressione ENTER)')
+            input('')
         else:
             return escolha
 

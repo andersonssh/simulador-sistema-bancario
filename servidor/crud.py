@@ -108,12 +108,11 @@ def transferir(email, senha, valor, email_destino):
                 print('Valor inserido nao pode ser transferido!')
             return False
         else:
-            #sacando do usuario atual
-            cur.execute(f'UPDATE usuarios  SET saldo={valor_atual - valor} where email="{email}"')
-
             #depositando para o destino
             valor_atual_destino = tuple(cur.execute(f'SELECT saldo FROM usuarios WHERE email="{email_destino}"'))[0][0]
             cur.execute(f'UPDATE usuarios  SET saldo={valor_atual_destino + valor} where email="{email_destino}"')
+            #sacando do usuario atual
+            cur.execute(f'UPDATE usuarios  SET saldo={valor_atual - valor} where email="{email}"')
             con.commit()
             if debug:
                 print('Valor transferido!')

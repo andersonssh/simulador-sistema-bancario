@@ -89,6 +89,8 @@ def start():
                 sessoes_ativas[ip]['con'].send(NEGATIVO)
         #transferir
         elif dados[0] == '3':
+            print('CONEXOES TRANSFERIR!!!')
+            print(dados)
             valor = float(dados[1])
             email_dest = dados[2]
             if crud.transferir(sessoes_ativas[ip]['email'], sessoes_ativas[ip]['senha'],valor, email_dest):
@@ -130,7 +132,7 @@ def start():
                 sessoes_ativas[ip]['con'].send(NEGATIVO)
         elif dados[0] == '6':
             senha_antiga = sha256(dados[1].encode()).hexdigest()
-            senha_nova = sha256(dados[2].endoce()).hexdigest()
+            senha_nova = sha256(dados[2].encode()).hexdigest()
             if crud.alterar_senha(sessoes_ativas[ip]['email'], senha_antiga, senha_nova):
                 if debug:
                     print('SENHA ALTERADA COM SUCESSO!')
@@ -178,8 +180,9 @@ def start():
                     print('requisicao recebida, iniciando gerenciador de requisicoes!')
                 try:
                     requisicao(req, ip)
-                except:
+                except Exception as e:
                     if debug:
+                        print(e)
                         print('Cliente tentou violar regras')
                     sessoes_ativas[ip]['con'].send(b'NO')
 
