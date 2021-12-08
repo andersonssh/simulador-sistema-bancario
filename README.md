@@ -1,4 +1,4 @@
-# Simulador-de-Sistema-Bancário
+# Simulador de Sistema Bancário
 Simula um sistema bancário em rede local através de sockets em um sistema do tipo cliente-servidor
 
 Objetivo: Aprender conceitos de back-end tais como, crud, uso de threads, pacotes em python, gerenciamento de conexões, etc... Tudo com o objetivo de melhorar minha noção de server-side no início dos meus estudos sobre a área!
