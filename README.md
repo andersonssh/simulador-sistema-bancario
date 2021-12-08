@@ -5,10 +5,29 @@ Objetivo: Aprender conceitos de back-end tais como, crud, uso de threads, pacote
 
 ### Como funciona
 
-O sistema é capaz de gerenciar multiplas conexões em tempo real em uma rede local. Ao executar o mainServer.py, ele irá configurar o servidor para atender as requisições, armazenando os dados usando SQLite3. 
+O arquivo mainServer.py irá iniciar um servidor de onde as aplicações clientes podem se conectar e realizar operações bancárias entre contas cadastradas no sistema.
 
-Você pode rodar o servidor em uma máquina com python instalado, usando **python3 -u mainServer.py**.
+### Como usar
 
-O cliente, que pode ser executado em qualquer dispositivo de uma mesma rede, pode ser executado da mesma forma, substituindo apenas o nome do arquivo. 
+Com python intalado na sua máquina, inicie a aplicação mainServer.py no terminal com o comando:
 
-**MELHORIAS LÓGICAS PODEM SER FEITAS. PEÇO SUA AJUDA PARA MELHORAR A ORGANIZAÇÃO DO CÓDIGO, FAÇA UM FORK DO MEU PROJETO E MELHORE SUAS HABILIDADES TAMBÉM.**
+```bash
+$ python3 mainServer.py
+```
+
+Com a aplicação em execução, irá ser mostrada um IP e PORTA que devem ser colocados na aplicação do cliente.
+
+Para executar o cliente use o comando:
+
+```bash
+$python3 cliente.py
+```
+
+O cliente pode ser usado em qualquer dispositivo da rede local que tenha python instalado.
+
+
+A fazer no futuro:
+
+- [ ] Mover esta aplicação para um módulo único chamado SSB_V1 e criar um novo módulo com a aplicação refatorada a cada ano. 
+  * Objetivo: Reescrever a aplicação de acordo com minhas novas habilidades e ver a diferença em relação a anterior.
+- [ ] Criar versao SSB_V3 após a SSB_V2 haver sido concluída.
