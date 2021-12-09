@@ -30,4 +30,4 @@ A fazer no futuro:
 
 - [ ] Mover esta aplicação para um módulo único chamado SSB_V1 e criar um novo módulo com a aplicação refatorada a cada ano. 
   * Objetivo: Reescrever a aplicação de acordo com minhas novas habilidades e ver a diferença em relação a anterior.
-- [ ] Criar versao SSB_V3 após a SSB_V2 haver sido concluída.
+- [ ] Criar versao SSB_V3 1 ano após a SSB_V2 haver sido concluída.
